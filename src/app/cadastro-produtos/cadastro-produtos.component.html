@@ -1,0 +1,71 @@
+<!-- Page Heading -->
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Cadastro de Produtos</h1>
+</div>
+
+<div class="row">
+    <div class="col-xl-12 col-md-12 mb-12">
+        <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+                    
+                <form #formCadastro="ngForm" (submit)="cadastrarProduto(formCadastro)">
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Nome do Produto:</label>
+                            <input type="text" class="form-control"
+                                name="nome" ngModel/>
+                        </div>
+                        <div class="col-md-3">
+                            <label>Preço:</label>
+                            <input type="text" class="form-control"
+                                name="preco" ngModel/>
+                        </div>
+                        <div class="col-md-3">
+                            <label>Quantidade:</label>
+                            <input type="text" class="form-control"
+                                name="quantidade" ngModel/>
+                        </div>
+                    </div>
+
+                    <br/>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label>Data de Compra:</label>
+                            <input type="date" class="form-control"
+                                name="dataCompra" ngModel/>
+                        </div>
+                        <div class="col-md-4">
+                            <label>Categoria:</label>
+                            <select class="form-control"
+                                name="categoria" ngModel>
+                                <option value="">Escolha uma opção</option>
+                                <option *ngFor="let item of categorias" value="{{item}}">
+                                    {{item | uppercase}}
+                                </option>
+                            </select>   
+                        </div>
+                        <div class="col-md-4">
+                            <label>Fornecedor:</label>
+                            <select class="form-control"
+                                name="fornecedor" ngModel>
+                                <option value="">Escolha uma opção</option>
+                                <option *ngFor="let item of fornecedores" value="">
+                                    {{item.nome | uppercase}} (CNPJ: {{item.cnpj}})
+                                </option>
+                            </select>   
+                        </div>
+                    </div>
+
+                    <br/>
+
+                    <input type="submit" value="Cadastrar Produto"
+                        class="btn btn-success"/>
+
+                </form>
+                
+            </div>
+        </div>
+    </div>
+</div>
