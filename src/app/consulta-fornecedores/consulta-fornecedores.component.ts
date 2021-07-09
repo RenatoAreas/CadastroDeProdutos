@@ -10,8 +10,13 @@ export class ConsultaFornecedoresComponent implements OnInit {
 
   //atributos..
 
-  mensagemSucesso = "";
-  mensagemErro = "";
+  mensagemSucessoExclusao = "";
+  mensagemErroExclusao = "";
+
+  mensagemSucessoEdicao = "";
+  mensagemErroEdicao = "";
+
+  pesquisa = "";
 
   //listagem de fornecedores
   fornecedores = [
@@ -25,12 +30,12 @@ export class ConsultaFornecedoresComponent implements OnInit {
   //armazenar os dados de 1 fornecedor
   fornecedor = {
     idFornecedor: 0,
-      nome: '',
-      cnpj: ''
+    nome: '',
+    cnpj: ''
   }
 
   //atributo para armazenar a página atual
-  //do componente de paginação 
+  //do componente de paginação
   page = 1;
 
   //@Autowired -> injeção de dependencia
@@ -51,59 +56,61 @@ export class ConsultaFornecedoresComponent implements OnInit {
   }
 
   //função para buscar 1 fornecedor na API atraves do ID
-  obterFornecedor(idFornecedor : number) : void {
+  obterFornecedor(idFornecedor: number): void {
 
-      this.mensagemSucesso = "";
-      this.mensagemErro = "";
+    this.mensagemSucessoEdicao = "";
+    this.mensagemErroEdicao = "";
 
-      //consultar o fornecedor na API atraves do ID
-      this.fornecedoresService.getById(idFornecedor)
-        .subscribe(
-          (data) => {
-            this.fornecedor = (data as any);
-          },
-          (e) => {
-            console.log(e);
-          }
-        )
+    this.mensagemSucessoExclusao = "";
+    this.mensagemErroExclusao = "";
+
+    //consultar o fornecedor na API atraves do ID
+    this.fornecedoresService.getById(idFornecedor)
+      .subscribe(
+        (data) => {
+          this.fornecedor = (data as any);
+        },
+        (e) => {
+          console.log(e);
+        }
+      )
   }
 
   //função para excluir o fornecedor na API
-  excluirFornecedor(idFornecedor : number) : void {
+  excluirFornecedor(idFornecedor: number): void {
     //fazendo uma chamada ao serviço de exclusão da API
     this.fornecedoresService.delete(idFornecedor)
       .subscribe(
         (data) => {
-          this.mensagemSucesso = data;
+          this.mensagemSucessoExclusao = data;
           this.ngOnInit(); //executando a consulta
         },
         (e) => {
-          this.mensagemErro = e.error;
+          this.mensagemErroExclusao = "Não foi possível realizar a exclusão do fornecedor.";
         }
       )
   }
 
   //função para atualizar um fornecedor
-  atualizarFornecedor(formEdicao : any) : void {
+  atualizarFornecedor(formEdicao: any): void {
     //fazendo uma chamada para o serviço de edição da API
     this.fornecedoresService.put(formEdicao.form.value)
       .subscribe(
         (data) => {
-          this.mensagemSucesso = data;
+          this.mensagemSucessoEdicao = data;
           this.ngOnInit(); //executar a consulta
         },
         (e) => {
           console.log(e);
-          this.mensagemErro = e.error;
+          this.mensagemErroEdicao = e.error;
         }
       )
   }
 
-  //funça para realizar a paginação
+  //função para realizar a paginação
   //avançar ou voltar na paginação
-  handlePageChange(event : number) {
+  handlePageChange(event: number) {
     this.page = event;
   }
 
 }
-

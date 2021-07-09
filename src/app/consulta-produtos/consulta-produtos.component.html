@@ -14,6 +14,7 @@
                             <th>Nome do Produto</th>
                             <th>Preço</th>
                             <th>Quantidade</th>
+                            <th>Total</th>
                             <th>Data de Compra</th>
                             <th>Categoria</th>
                             <th>Fornecedor</th>
@@ -21,13 +22,17 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                        <tr *ngFor="let item of produtos | paginate : { itemsPerPage : 5, currentPage : page }">
+                            <td>{{item.nome | uppercase}}</td>
+                            <td>{{item.preco | currency : 'R$ '}}</td>
+                            <td>{{item.quantidade}}</td>
+                            <td>{{item.total | currency : 'R$ '}}</td>
+                            <td>{{item.dataCompra | date : 'dd/MM/yyyy'}}</td>
+                            <td>{{item.categoria}}</td>
+                            <td>
+                                {{item.fornecedor.nome}} <br />
+                                <small>CNPJ: {{item.fornecedor.cnpj}} </small>
+                            </td>
                             <td>
                                 <button class="btn btn-danger btn-sm" data-target="#janela_exclusao"
                                     data-toggle="modal">
@@ -42,12 +47,16 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="7">
-                                Quantidade de produtos: 0
+                            <td colspan="8">
+                                Quantidade de produtos: {{produtos.length}}
                             </td>
                         </tr>
                     </tfoot>
                 </table>
+
+                <pagination-controls (pageChange)="handlePageChange($event)" previousLabel="Anterior"
+                    nextLabel="Próximo">
+                </pagination-controls>
 
             </div>
         </div>

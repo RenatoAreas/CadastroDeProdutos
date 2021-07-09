@@ -19,6 +19,13 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 //importando a bilbioteca para paginação de dados
 import { NgxPaginationModule } from 'ngx-pagination';
 
+//importando o modulo de filtro de pesquisa
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
+
+//importando os interceptors
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { TokenInterceptor } from './_interceptors/tokenInterceptor';
+
 //mapear as rotas (URLs) para cada componente (página) do projeto
 const routes : Routes = [
   { path : 'painel-principal', component : PainelPrincipalComponent },
@@ -42,9 +49,14 @@ const routes : Routes = [
     RouterModule.forRoot(routes), //registrando as rotas mapeadas para o projeto
     HttpClientModule,
     FormsModule,ReactiveFormsModule, //registrando a biblioteca para consumo de APIs
-    NgxPaginationModule //registrando a biblioteca de paginação
+    NgxPaginationModule, //registrando a biblioteca de paginação
+    Ng2SearchPipeModule //registrando a biblioteca de filtro
   ],
-  providers: [],
+  providers: [{
+    provide: HTTP_INTERCEPTORS,
+    useClass: TokenInterceptor,
+    multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

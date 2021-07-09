@@ -4,41 +4,57 @@
 </div>
 
 <div *ngIf="mensagemSucesso" class="alert alert-success mt-2">
-    <strong>  Sucesso! </strong>{{mensagemSucesso}}
+    <strong>Sucesso!</strong> {{mensagemSucesso}}
 </div>
 
 <div *ngIf="mensagemErro" class="alert alert-danger mt-2">
-    <strong> Error! </strong>{{mensagemErro}}
+    <strong>Erro!</strong> {{mensagemErro}}
 </div>
 
 <div class="row">
     <div class="col-xl-12 col-md-12 mb-12">
         <div class="card border-left-primary shadow h-100 py-2">
             <div class="card-body">
-                    
-                <form #formCadastro="ngForm" (submit)="cadastrarFornecedor(formCadastro)">
+
+                <form [formGroup]="formCadastro" (ngSubmit)="cadastrarFornecedor()">
 
                     <div class="row">
                         <div class="col-md-8">
                             <label>Nome do Fornecedor:</label>
-                            <input type="text" class="form-control"
-                                name="nome" ngModel/>
+                            <input type="text" class="form-control" formControlName="nome" />
+                            <span *ngIf="form.nome.touched && form.nome.invalid">
+                                <span *ngIf="form.nome.errors.required" class="text-danger">
+                                    <i class="fa fa-exclamation-circle"></i> Por favor, informe o nome do fornecedor.
+                                </span>
+                                <span *ngIf="form.nome.errors.pattern" class="text-danger">
+                                    <i class="fa fa-exclamation-circle"></i> Caracteres inválidos para este campo.
+                                </span>
+                            </span>
                         </div>
                         <div class="col-md-4">
                             <label>CNPJ:</label>
-                            <input type="text" class="form-control"
-                                name="cnpj" ngModel/>
+                            <input type="text" class="form-control" formControlName="cnpj" maxlength="14"/>
+                            <span *ngIf="form.cnpj.touched && form.cnpj.invalid">
+                                <span *ngIf="form.cnpj.errors.required" class="text-danger">
+                                    <i class="fa fa-exclamation-circle"></i> Por favor, informe o CNPJ do fornecedor.
+                                </span>
+                                <span *ngIf="form.cnpj.errors.pattern" class="text-danger">
+                                    <i class="fa fa-exclamation-circle"></i> Informe 14 dígitos numéricos.
+                                </span>
+                            </span>
                         </div>
                     </div>
 
-                    <br/>
+                    <br />
 
-                    <input type="submit" value="Cadastrar Fornecedor"
-                        class="btn btn-success"/>
+                    <input [disabled]="!formCadastro.valid" type="submit" value="Cadastrar Fornecedor" class="btn btn-success" />
 
                 </form>
-                
+
             </div>
         </div>
     </div>
 </div>
+
+
+

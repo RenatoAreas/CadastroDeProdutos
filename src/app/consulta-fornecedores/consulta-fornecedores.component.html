@@ -3,10 +3,30 @@
     <h1 class="h3 mb-0 text-gray-800">Consulta de Fornecedores</h1>
 </div>
 
+<div *ngIf="mensagemSucessoExclusao" class="alert alert-success">
+    <strong>Sucesso!</strong> {{mensagemSucessoExclusao}}
+</div>
+
+<div *ngIf="mensagemErroExclusao" class="alert alert-danger">
+    <strong>Erro!</strong> {{mensagemErroExclusao}}
+</div>
+
 <div class="row">
     <div class="col-xl-12 col-md-12 mb-12">
         <div class="card border-left-primary shadow h-100 py-2">
             <div class="card-body">
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <input type="text" 
+                                class="form-control"
+                                [(ngModel)]="pesquisa"
+                                placeholder="Pesquisar Fornecedores"
+                            />
+                        </div>
+                    </div>
+                </div>
 
                 <table class="table table-hover table-sm">
                     <thead>
@@ -17,7 +37,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let item of fornecedores | paginate : { itemsPerPage : 10, currentPage : page }">
+                        <tr *ngFor="let item of fornecedores | filter : pesquisa | paginate : { itemsPerPage : 5, currentPage : page }">
                             <td>{{item.nome | uppercase}}</td>
                             <td>{{item.cnpj}}</td>
                             <td>
@@ -66,14 +86,6 @@
             </div>
             <div class="modal-body">
 
-                <div *ngIf="mensagemSucesso" class="alert alert-success">
-                    <strong>Sucesso!</strong> {{mensagemSucesso}}
-                </div>
-
-                <div *ngIf="mensagemErro" class="alert alert-danger">
-                    <strong>Erro!</strong> {{mensagemErro}}
-                </div>
-
                 <p>Deseja realmente excluir o fornecedor selecionado?</p>
                 
                 Nome do Fornecedor: <strong>{{fornecedor.nome}}</strong>
@@ -83,7 +95,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-light" data-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-danger"
+                <button type="button" class="btn btn-danger" data-dismiss="modal"
                     (click)="excluirFornecedor(fornecedor.idFornecedor)">
                     <i class="fa fa-trash"></i> Confirmar Exclusão
                 </button>
@@ -101,12 +113,12 @@
             </div>
             <div class="modal-body">
 
-                <div *ngIf="mensagemSucesso" class="alert alert-success">
-                    <strong>Sucesso ! </strong> {{mensagemSucesso}}
+                <div *ngIf="mensagemSucessoEdicao" class="alert alert-success">
+                    <strong>Sucesso!</strong> {{mensagemSucessoEdicao}}
                 </div>
-
-                <div *ngIf="mensagemErro" class="alert alert-danger">
-                    <strong>Erro ! </strong> {{mensagemErro}}
+                
+                <div *ngIf="mensagemErroEdicao" class="alert alert-danger">
+                    <strong>Erro!</strong> {{mensagemErroEdicao}}
                 </div>
 
                 <form #formEdicao="ngForm" (submit)="atualizarFornecedor(formEdicao)">
@@ -144,4 +156,5 @@
         </div>
     </div>
 </div>
+
 

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ProdutosService } from '../services/produtos.service';
 
 @Component({
   selector: 'app-consulta-produtos',
@@ -7,9 +8,48 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ConsultaProdutosComponent implements OnInit {
 
-  constructor() { }
+  //listagem de produtos
+  produtos = [
+    {
+      idProduto: 0,
+      nome: '',
+      preco: '',
+      quantidade: '',
+      total: '',
+      dataCompra: '',
+      categoria: '',
+      fornecedor: {
+        nome: '',
+        cnpj: ''
+      }
+    }
+  ];
 
-  ngOnInit(): void {
+  //atributo para armazenar a página atual
+  //do componente de paginação
+  page = 1;
+
+  //injeção de dependencia
+  constructor(private produtosService: ProdutosService) { }
+
+  //função executada quando o componente é carregado!
+  ngOnInit(): void { //abrir o componente..
+    //executando a consulta de produtos na API..
+    this.produtosService.get()
+      .subscribe( //callback da API (retorno)
+        (data) => { //resposta de sucesso
+          this.produtos = (data as any[]);
+        },
+        (e) => { //resposta de erro
+          console.log(e);
+        }
+      )
+  }
+
+  //função para realizar a paginação
+  //avançar ou voltar na paginação
+  handlePageChange(event: number) {
+    this.page = event;
   }
 
 }
